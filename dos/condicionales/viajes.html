@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form</title>
+  </head>
+  <body>
+    <h1 style="text-align: center">Formulario de viajar</h1>
+    <form action="viajes.php" method="post">
+        <label for="genero">Genero</label>
+      <select name="genero" id="genero">
+        <option value="0">Hombre</option>
+        <option value="1">Mujer</option>
+      </select>
+
+      <br />
+
+      <label for="nombre">Nombre</label>
+      <input
+        type="text"
+        name="nombre"
+        id="nombre"
+        placeholder="Introduce tu nombre"
+        required
+      />
+
+      <br />
+      <label for="dni">DNI</label>
+      <input type="text" name="dni" id="dni" required maxlength="8" />
+      <label for="letra">Letra</label>
+      <input type="text" name="letra" id="letra" required maxlength="1" />
+      <br />
+      <label for="">Fecha viaje</label>
+      <input type="date" name="Fecha" />
+      <br />
+      <label for="">Destino</label>
+      <input type="text" name="destino" required />
+      <h3>Motivo del viaje</h3>
+      <label for="Ocio">Ocio</label>
+      <input type="radio" name="motivo" value="ocio" id="Ocio" checked  />
+      <label for="Trabajo">Trabajo</label>
+      <input type="radio" name="motivo" value="trabajo" id="Trabajo" />
+
+      <br></br>
+
+      <input type="submit" value="enviar" />
+    </form>
+  </body>
+</html>
