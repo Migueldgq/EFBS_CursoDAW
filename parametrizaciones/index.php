@@ -96,6 +96,11 @@
                 } elseif (isset($_SESSION["usuario-admin"])) {
                   ?>
                   <a
+                  href="salir.php"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+                  >Salir</a
+                >
+                  <a
                   href="productos.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Perfil admin</a
