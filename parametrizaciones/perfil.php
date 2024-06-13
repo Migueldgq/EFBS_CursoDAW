@@ -19,7 +19,23 @@ if(isset($_SESSION["usuario"])){
         $name = $userLoggedInfo["user_name"];
         $lastname = $userLoggedInfo["user_lastname"];
         $regdate = $userLoggedInfo["user_registerdate"];
+        $email = $userLoggedInfo["user_email"];
+        $location = $userLoggedInfo["user_location"];
+        $birthdate = $userLoggedInfo["user_birthdate"];
       };
+
+      // $trozos = explode("-",$regdate)
+      // $dia = $trozos[2];
+      // $mes = $trozos[1];
+      // $ano = $trozos[0];
+      // $fecharegistrobien = $dia/$mes/$ano
+
+      // Fecha en español
+    setlocale(LC_TIME, 'es_ES.UTF-8', 'es_ES', 'Spanish_Spain.1252');
+
+    // Convertimos a una manera mas legible "10 de junio de 2024"
+    $date = new DateTime($regdate);
+    $formattedRegDate = strftime('%d de %B de %Y', $date->getTimestamp());
 
 ?>
     <!DOCTYPE html>
@@ -188,15 +204,31 @@ if(isset($_SESSION["usuario"])){
         </div>
       </nav>
     </header>
-        <section class="h-full w-full flex items-center justify-center ">
-            <article class="w-96 h-96 bg-gray-200 rounded-xl flex flex-col
-             items-center justify-center mt-10">
-                  <h1><?php   echo strtoupper("$name $lastname")   ?></h1>
-                  <p>Registrado desde <?php   echo"$regdate"  ?> </p>
-                  <input type="text" name="nombre" placeholder="Nombre" value="<?php  echo$nom;  ?> " class="appearance-none block w-1/2 bg-gray-500 text-gray-200 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:border-gray-800">
-            </article>
 
+    <section class="h-full w-full flex items-center justify-center ">
+          <article class="w-96 h-auto bg-gray-200 rounded-xl flex flex-col items-center justify-center mt-10 p-5">
+                  <h1><?php   echo strtoupper("$name $lastname")   ?></h1>
+                  <p>Registrado desde <?php   echo"$formattedRegDate"  ?> </p>
+
+
+
+            <form class="" method="POST" action="actualizar.php">
+              <label for="name">Nombre</label>
+            <input type="text" name="name" id="name" placeholder="Nombre" value="<?php  echo $name;  ?>" class="appearance-none block w-full bg-gray-500 text-gray-200 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:border-gray-800">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" placeholder="Email" value="<?php  echo $email;  ?>" class="appearance-none block w-full bg-gray-500 text-gray-200 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:border-gray-800">
+            <label for="location">Localidad</label>
+            <input type="text" name="location" id="location" placeholder="Localidad" value="<?php  echo $location;?>" class="appearance-none block w-full bg-gray-500 text-gray-200 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:border-gray-800">
+            <label for="birthdate">Nacimiento</label>
+            <input type="date" name="birthdate" id="birthdate" placeholder="YYYY-MM-DD" value="<?php  echo $birthdate;?>" class="appearance-none block w-full bg-gray-500 text-gray-200 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:border-gray-800">
+            <div class="flex gap-5 items-center justify-center">
+            <input type="submit" value="Actualizar" class="bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">
+            </div>
+            </form>
+        </article>
+            
         </section>
+        
     </body>
     </html>
 <?php

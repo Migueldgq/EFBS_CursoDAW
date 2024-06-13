@@ -3,10 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tienda - Login</title>
+    <title>Admin Registro</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gray-600">
   <header>
     <nav class="bg-gray-800">
       <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -84,7 +83,7 @@
                 <a
                   href="productos.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
-                  >Perfil admin</a
+                  >Perfil</a
                 >
                 <a
                   href="salir.php"
@@ -101,7 +100,7 @@
                 >
 
                 <a
-                  href="./admin/logadminpage.php"
+                  href="logadminpage.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Inicia sesión mi admin pana</a
                 >
@@ -147,12 +146,52 @@
       </div>
     </nav>
   </header>
+  <body class="bg-gray-600">
     <section class="w-full flex items-center justify-center py-10 px-10">
       <form
         class="w-full max-w-lg bg-gray-100 p-5 rounded-md"
-        action="hacerlogin.php"
+        action="registeradmin.php"
         method="POST"
       >
+        <h1
+          class="block uppercase tracking-wide text-gray-700 font-bold mb-2"
+        >
+          Registro admin
+        </h1>
+        <div class="flex flex-wrap -mx-3 mb-6">
+          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-first-name"
+            >
+              Nombre
+            </label>
+            <input
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="grid-first-name"
+              type="text"
+              placeholder="Introduce tu nombre aquí"
+              required
+              name="nombre"
+            />
+          </div>
+          <div class="w-full md:w-1/2 px-3">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-last-name"
+            >
+              Apellido
+            </label>
+            <input
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="grid-last-name"
+              type="text"
+              placeholder="Introduce tu apellido aquí"
+              required
+              name="apellido"
+            />
+          </div>
+        </div>
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3">
             <label
@@ -185,6 +224,9 @@
               required
               name="contraseña"
             />
+            <p class="text-gray-600 text-xs italic">
+              Introduce una contraseña larga para que sea segura
+            </p>
           </div>
         </div>
 
@@ -192,14 +234,14 @@
           <button
             class="bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded"
           >
-            Iniciar sesión
+            Registrarme
           </button>
           <article>
             <a
-              href="registro.html"
+              href="login.php"
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
             >
-              Si no tienes cuenta, regístrate
+              Si ya tienes cuenta, inicia sesión
             </a>
           </article>
         </div>

@@ -65,12 +65,12 @@
             <div class="hidden sm:ml-6 sm:block">
               <div class="flex space-x-4">
                 <a
-                  href="index.php"
+                  href="../index.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Inicio</a
                 >
                 <a
-                  href="productos.php"
+                  href="../productos.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Productos</a
                 >
@@ -82,12 +82,12 @@
                   
                   ?>
                 <a
-                  href="productos.php"
+                  href="../productos.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Perfil admin</a
                 >
                 <a
-                  href="salir.php"
+                  href="../salir.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Salir</a
                 >
@@ -95,13 +95,13 @@
                 } else {
                   ?>
                 <a
-                  href="login.php"
+                  href="../login.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Inicia sesión mi pana</a
                 >
 
                 <a
-                  href="./admin/logadminpage.php"
+                  href="logadminpage.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Inicia sesión mi admin pana</a
                 >
@@ -150,9 +150,14 @@
     <section class="w-full flex items-center justify-center py-10 px-10">
       <form
         class="w-full max-w-lg bg-gray-100 p-5 rounded-md"
-        action="hacerlogin.php"
+        action="loginadmin.php"
         method="POST"
       >
+      <h1
+          class="block uppercase tracking-wide text-gray-700 font-bold mb-2"
+        >
+          Login admin
+        </h1>
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3">
             <label
@@ -196,7 +201,7 @@
           </button>
           <article>
             <a
-              href="registro.html"
+              href="./formadmin.php"
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
             >
               Si no tienes cuenta, regístrate
