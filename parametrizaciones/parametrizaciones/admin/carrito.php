@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+     function confirmDelete(event, productId) {
+        if (!window.confirm('¿Estás seguro de eliminar el producto?')) {
+          event.preventDefault();
+        }
+      }
+    </script>
   </head>
   <body class="bg-gray-600">
   <header>
@@ -65,12 +72,12 @@
             <div class="hidden sm:ml-6 sm:block">
               <div class="flex space-x-4">
                 <a
-                  href="index.php"
+                  href="../index.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Inicio</a
                 >
                 <a
-                  href="productos.php"
+                  href="../productos.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Productos</a
                 >
@@ -82,7 +89,7 @@
                   
                   ?>
                 <a
-                  href="perfil.php"
+                  href="../perfil.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Perfil</a
                 >
@@ -92,7 +99,7 @@
                   >Carrito</a
                 >
                 <a
-                  href="salir.php"
+                  href="../salir.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Salir</a
                 >
@@ -101,19 +108,19 @@
                 } elseif (isset($_SESSION["usuario-admin"])) {
                   ?>
                   <a
-                  href="salir.php"
+                  href="../salir.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Salir</a
                 >
                   <a
-                  href="productos.php"
+                  href="../productos.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Perfil admin</a
                 ><?php
                 } else {
                   ?>
                 <a
-                  href="login.php"
+                  href="../login.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Inicia sesión mi pana</a
                 >
@@ -170,5 +177,104 @@
       </div>
     </nav>
   </header>
-  </body>
+  <!-- component -->
+<!-- Create By Joker Banny -->
+<style>
+    @layer utilities {
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+</style>
+
+<body>
+  <div class="h-full bg-gray-100 pt-20">
+    <h1 class="mb-10 text-center text-2xl font-bold">Cart Items</h1>
+    <div class=" flex flex-col items-center">
+      <?php
+
+      include("../conexion.php");
+      
+      if (isset($_SESSION["carrito"])) {
+        $idCar = $_SESSION["carrito"];
+    
+        $selectCarDetailsByCardId = "SELECT * FROM detallecarrito WHERE car_id = $idCar ";
+    
+        $ejecutar=$conexion->query($selectCarDetailsByCardId);
+    
+        if ($ejecutar->num_rows>0) {
+            foreach ($ejecutar as $product) {
+                $productId = $product["product_id"];
+                
+                
+                $selectProductsInfoById = "SELECT * FROM productos WHERE product_id = $productId";
+    
+                $ejecutar= $conexion->query($selectProductsInfoById);
+        
+                foreach ($ejecutar as $product) {
+                    $productId = $product["product_id"];
+                    $productName = $product["product_name"];
+                    $productDesc = $product["product_description"];
+                    $ProductPrice = $product["product_price"];
+                    $getProductsImages = "SELECT * FROM images WHERE product_id = $productId";
+            $ejecutar1 = $conexion->query($getProductsImages);
+            foreach ($ejecutar1 as $img) {
+                $productImg = $img["image_name"];
+                }?>
+                
+                <div class="rounded-lg md:w-2/3">
+        <div class="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
+          <img src="../imagenes/product<?php echo $productId?>/<?php echo $productImg; ?>" alt="product-image" class="w-full rounded-lg sm:w-40" />
+          <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
+            <div class="mt-5 sm:mt-0">
+              <h2 class="text-lg font-bold text-gray-900"><?php echo $productName?></h2>
+              <p class="mt-1 text-xs text-gray-700"><?php echo $productDesc ?></p>
+            </div>
+            <div class="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
+              <div class="flex items-center border-gray-100">
+                <span class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"> - </span>
+                <input class="h-8 w-8 border bg-white text-center text-xs outline-none" type="number" value="1" min="1" />
+                <span class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"> + </span>
+              </div>
+              <div class="flex items-center space-x-4">
+                <p class="text-sm"><?php    echo $ProductPrice    ?></p>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 cursor-pointer duration-150 hover:text-red-500">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+
+               <?php
+    
+    
+            }
+    
+    
+    }}
+    
+    } else {
+        echo"No hay carrito jefe";
+    }
+    
+      
+      
+      
+      
+      
+      
+      
+      ?>
+      <!-- Sub total -->
+      
+    </div>
+  </div>
+</body>
+</body>
 </html>

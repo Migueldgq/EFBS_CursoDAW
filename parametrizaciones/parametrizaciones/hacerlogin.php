@@ -20,6 +20,11 @@ if($ejecutar->num_rows > 0){
         echo"Login exitoso";
         session_start();
         $_SESSION["usuario"] = $id;
+        if(isset($_SESSION["carrito"])){
+            $carId = $_SESSION["carrito"];
+            $sql = "UPDATE carrito SET user_id  = $id WHERE car_id = $carId";
+            $conexion->query($sql);
+        }
         //redireccionar
 
      header("location:index.php");
