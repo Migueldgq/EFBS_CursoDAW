@@ -7,7 +7,7 @@ include("../conexion.php");
 
 $getProductInfoById = "SELECT * FROM productos WHERE product_id =$id";
 
-$ejecutar = $conexion->query($getProductInfoById)
+$ejecutar = $conexion->query($getProductInfoById);
 
 foreach ($ejecutar as $product) {
     $prodname = $product["product_name"];
@@ -17,4 +17,3 @@ foreach ($ejecutar as $product) {
 
 
 
-?>

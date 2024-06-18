@@ -48,23 +48,53 @@ if (!isset($_SESSION["carrito"])) {
     $idCar = $conexion->insert_id;
 
     //Inserto el producto en el carrito
-    
-    
-    $addProductCar = "INSERT INTO detallecarrito (car_id,product_id) VALUES ('$idCar', '$id')";
+     $_SESSION["carrito"] = $idCar;
 
-    $_SESSION["carrito"] = $idCar;
-
-    $conexion->query($addProductCar);
-    echo"<script>
-         alert('Producto añadido a favoritos correctamente')
-         window.location.href='../productos.php'
-         </script>";
-
-} else {
-
+     // Obtengo el ID del carrito de la sesión
     $idCar = $_SESSION["carrito"];
 
+    // Verifico si el producto ya está en el carrito
+    $checkProduct = "SELECT * FROM detallecarrito WHERE car_id = '$idCar' AND product_id = '$id'";
+    $result = $conexion->query($checkProduct);
+
+    if ($result->num_rows > 0) {
+    // El producto ya está en el carrito
+    echo "<script>
+             alert('El producto ya está en tus favoritos')
+             window.location.href='../productos.php'
+         </script>";
+} else{
     $addProductCar = "INSERT INTO detallecarrito (car_id,product_id) VALUES ('$idCar', '$id')";
+
+   
+
+    $conexion->query($addProductCar);
+    echo"<script>
+         alert('Producto añadido a favoritos correctamente')
+         window.location.href='../productos.php'
+         </script>";
+}
+
+         } else {
+
+
+    
+// Obtengo el ID del carrito de la sesión
+    $idCar = $_SESSION["carrito"];
+
+
+    // Verifico si el producto ya está en el carrito
+    $checkProduct = "SELECT * FROM detallecarrito WHERE car_id = '$idCar' AND product_id = '$id'";
+    $result = $conexion->query($checkProduct);
+
+    if ($result->num_rows > 0) {
+    // El producto ya está en el carrito
+    echo "<script>
+             alert('El producto ya está en tus favoritos')
+             window.location.href='../productos.php'
+         </script>";
+} else{
+     $addProductCar = "INSERT INTO detallecarrito (car_id,product_id) VALUES ('$idCar', '$id')";
 
     
 
@@ -74,6 +104,9 @@ if (!isset($_SESSION["carrito"])) {
          window.location.href='../productos.php'
          </script>";
     
+}
+
+   
 };
 
 

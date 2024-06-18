@@ -275,8 +275,8 @@ if (isset($_SESSION["usuario-admin"])) {
                 $productImg = $img["image_name"];
                 ?>
                
-              <div class="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-                <a class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
+               <div class="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+                <a class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="verproductpage.php?productId=<?php echo $productId  ?>">
                   <img class="object-cover" src="./imagenes/product<?php
                                           echo $productId?>/<?php echo $productImg; ?>"/>
                 </a>
