@@ -21,7 +21,10 @@ if($conexion->query($insertProductInfo)){
     $id = $conexion->insert_id;
     
     $insertProductPhoto = "INSERT INTO images (image_name , product_id) VALUES ('$img','$id')";
-//Vamos a crear una carpeta en un lugar especifico del server
+
+    $conexion->query($insertProductPhoto);
+
+    //Vamos a crear una carpeta en un lugar especifico del server
     mkdir("../imagenes/product$id",0777);
 
     $ruta = "../imagenes/product$id/$img";
@@ -29,10 +32,10 @@ if($conexion->query($insertProductInfo)){
     //Movemos img a la ruva
     move_uploaded_file($imgtemp,"$ruta");
 
-    $conexion->query($insertProductPhoto);
 
     echo"<script>
     alert('Tu articulo $nom se ha subido correctamente')
+    window.location.href='../productos.php';
     </script>";
 }else{
     echo"<script>

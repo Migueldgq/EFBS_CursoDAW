@@ -82,9 +82,14 @@
                   
                   ?>
                 <a
-                  href="productos.php"
+                  href="perfil.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Perfil</a
+                >
+                <a
+                  href="./admin/carrito.php"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+                  >Carrito</a
                 >
                 <a
                   href="salir.php"
@@ -117,6 +122,11 @@
                   href="./admin/logadminpage.php"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   >Inicia sesión mi admin pana</a
+                >
+                <a
+                  href="./admin/carrito.php"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+                  >Carrito</a
                 >
                 <?php
                 }
