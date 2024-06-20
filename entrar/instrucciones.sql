@@ -100,8 +100,9 @@ SELECT * FROM usuarios u INNER JOIN direcciones USING(id_usu) INNER JOIN metodos
 
 SELECT u.nom, p.name FROM usuarios u INNER JOIN metodos m USING(id_usu) INNER JOIN tarjetas t ON t.id_tar = m.id_tar INNER JOIN productos  
 
-/*       ACTUALIZAR         */
 
+
+/****       ACTUALIZAR         ****/
 
 
 UPDATE productos SET precio = '50' WHERE product_id=6;
