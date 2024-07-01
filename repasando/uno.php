@@ -1,0 +1,4 @@
+<?php
+
+//recordando arrays
+
