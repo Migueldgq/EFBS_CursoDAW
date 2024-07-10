@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <h1>Como acceder a las diferentes etiquetas</h1>
+    <p>Buenos días Oleiros</p>
+    <a href="#">El tiempo</a>
+    <div>
+      Canciones
+      <br />
+      <p>Hola que ase</p>
+      <p>Hola que ase2</p>
+    </div>
+    <i>Letra en cursiva</i>
+    <input type="text" name="nombre" />
+    <input type="email" name="email" />
+    <p class="text">CHao</p>
+    <p id="loquesea">Hasta mañana</p>
+    <span class="text">Hasta luego</span>
+    <span id="loquesea"></span>
+
+    <script>
+      //Seleccionando etiquetas
+      $(""); // esto es un selector
+      $("h1"); // esto es un selector de h1
+      $("a"); // esto es un selector de a
+      //accediendo a una etiqueta siguiente a otra
+      $("h1").next();
+
+      $("input"); // TENEMOS UN PROBLEMA
+      $("input").first();
+      $("input").last();
+      $("input").first().next();
+      $("input[type='email']");
+      $("input[type='text']");
+      $("input[type='text']").next();
+
+      //accedemos a una etiqueta dentro de otra
+
+      $("div p");
+
+      //accediendo por parentesco
+
+      $("br").siblings();
+
+      $("div").first.children("p");
+      $("div").last.children("p");
+
+      $("br").parent();
+      $("br").parents();
+
+      //Accediendo a través de ID o clase
+
+      $("p#loquesea");
+      $("p.text");
+    </script>
+  </body>
+</html>
