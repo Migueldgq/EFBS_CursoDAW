@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <div class="h-96 w-96 bg-red-500">
+      <img
+        src="./bombillaapagada.jpg"
+        alt=""
+        class="max-h-96 min-w-96 object-cover"
+      />
+    </div>
+    <div class="w-96 flex justify-center gap-10">
+      <button
+        onclick="on() "
+        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+      >
+        ON
+      </button>
+      <button
+        onclick="off()"
+        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+      >
+        OFF
+      </button>
+    </div>
+  </body>
+  <script>
+    function on() {
+      $("img").attr("src", "./bombillaencendida.jpg");
+    }
+
+    function off() {
+      $("img").attr("src", "./bombillaapagada.jpg");
+    }
+  </script>
+</html>

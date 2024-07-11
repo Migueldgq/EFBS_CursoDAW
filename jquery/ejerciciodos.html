@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tablero de Ajedrez</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      .chessboard {
+      }
+      .square {
+        width: 20px;
+        height: 20px;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chessboard"></div>
+    <script>
+      $(document).ready(function () {
+        let chessboard = $(".chessboard");
+
+        // Crear el tablero de ajedrez
+        for (let i = 0; i < 30; i++) {
+          for (let j = 0; j < 500; j++) {
+            let square = $("<div></div>")
+              .addClass("square")
+              .attr("data-position", `${i}-${j}`) // Agrega la posición como atributo
+              .css("background-color", "white")
+              .css("float", "left");
+            chessboard.append(square);
+          }
+        }
+
+        // Cargar el estado guardado del localStorage
+        let savedColors =
+          JSON.parse(localStorage.getItem("chessboardColors")) || {};
+        $(".square").each(function () {
+          
+          let position = $(this).attr("data-position");
+          if (savedColors[position]) {
+            $(this).css("background-color", savedColors[position]);
+          }
+        });
+
+        // Manejar el clic en los cuadrados
+        $(".chessboard").on("mouseup", ".square", function () {
+          let squareColor = $(this).css("background-color");
+          let newColor = squareColor === "rgb(255, 0, 0)" ? "white" : "red";
+          $(this).css("background-color", newColor);
+
+          // Guardar el nuevo estado en el localStorage
+          let position = $(this).attr("data-position");
+          savedColors[position] = newColor;
+          localStorage.setItem("chessboardColors", JSON.stringify(savedColors));
+        });
+      });
+    </script>
+  </body>
+</html>

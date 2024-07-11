@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <a href="">¿A dónde quieres ir?</a>
+    <br />
+    <span>Google</span>
+    <span>Meteo</span>
+
+    <script>
+      $("span").on("click", function () {
+        let spanText = $(this).text();
+        if (spanText == "Google") {
+          $("a").attr("href", "https://www.google.es");
+          $("a").text("Visitar Google");
+          console.log("google");
+        } else {
+          $("a").attr("href", "https://www.meteogalicia.es");
+          $("a").text("Visitar meteogalicia");
+          console.log("meteogalicia");
+        }
+      });
+
+      //   function toggleHref() {
+      //     let spanText = $("span").text();
+      //     if (spanText == "Google") {
+      //       $("a").attr("href", "https://www.google.es");
+      //       $("a").text("Visitar Google");
+      //       console.log("google");
+      //     } else {
+      //       $("a").attr("href", "https://www.meteogalicia.es");
+      //       $("a").text("Visitar meteogalicia");
+      //       console.log("meteogalicia");
+      //     }
+      //   }
+    </script>
+  </body>
+</html>
