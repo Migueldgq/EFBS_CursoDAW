@@ -23,7 +23,7 @@ una vez decodificamos, el array pasa a ser un array con su estructura original e
 
 ![alt text](image-4.png)
 
-Esto de abajo es lo que aparece en la consola, como resultado de 
+Esto de abajo es lo que aparece en la consola, como resultado de los console.log. 
 
 ![alt text](image-5.png)
 
