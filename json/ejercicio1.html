@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <input type="text" placeholder="Nombre" />
+    <input type="text" placeholder="Apellidos" />
+    <input type="number" placeholder="Edad" />
+    <input type="text" placeholder="Localidad" />
+    <input type="text" placeholder="Provincia" />
+    <button>Enviar</button>
+
+    <script>
+      let datos = [];
+      $("button").on("click", function () {
+        $("input").each(function () {
+          //alert($(this).val());
+          datos.push($(this).val());
+          console.log(datos);
+        });
+        //datos.forEach((dato) => {
+        //$("body").append(`<p>${dato}</p>`);
+        //});
+        datosJSONEADOS = JSON.stringify(datos);
+        //console.log(datosJSONEADOS);
+
+        //console.log(datos);
+
+        $.post("ejercicio1.php", { datos: datosJSONEADOS }, function (data) {
+          $("body").append(`${data}`);
+        });
+      });
+    </script>
+  </body>
+</html>

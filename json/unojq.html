@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <script>
+      let colores = ["red", "green", "blue", "yellow"];
+      //Codificando a JSON
+      let coloresJSON = JSON.stringify(colores); // JSON.stringify() es el equivalente a json_encode() de PHP
+      console.log("Array JSONEADO", coloresJSON);
+
+      let coloresDESJSON = JSON.parse(coloresJSON); // JSON.parse() es el equivalente a json_decode() de PHP
+      console.log("Array DESJSONEADO", coloresDESJSON);
+    </script>
+  </body>
+</html>
