@@ -17,7 +17,7 @@
 
         $("p").text("Te quedan " + (50 - totalValue) + " caracteres");
 
-        if (value.length >= 50) {
+        if (totalValue >= 50) {
           $("input").prop("disabled", true);
         }
       }
