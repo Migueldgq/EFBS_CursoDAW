@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body class="bg-gray-800">
+    <h1>Subiendo archivos</h1>
+
+    <form action="upload.php" method="POST" enctype="multipart/form-data">
+      <div id="papa" class="flex w-full">
+        <div
+          id="dropzone-1"
+          class="flex flex-col items-center justify-center w-full"
+        >
+          <label
+            for="dropzone-file"
+            class="flex flex-col items-center justify-center w-64 h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50"
+          >
+            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+              <svg
+                class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 16"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                />
+              </svg>
+              <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                <span class="font-semibold">Click to upload</span> or drag and
+                drop
+              </p>
+            </div>
+            <input
+              id="dropzone-file"
+              type="file"
+              name="imagen-1"
+              class="hidden"
+            />
+          </label>
+          <div class="flex gap-10">
+            <button class="text-white">Subir</button>
+            <div onclick="plus()" class="text-white">
+              <i class="fa-solid fa-plus text-white"></i>
+            </div>
+
+            <div id="minus" class="text-white">
+              <i class="fa-solid fa-minus" onclick="minus(contador)"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <input type="hidden" name="contador" value="1" />
+    </form>
+
+    <script>
+      let contador = 1;
+
+      if (contador <= 1) {
+        $("#minus").hide();
+      }
+
+      function plus() {
+        if (contador >= 5) {
+          return;
+        }
+        contador++;
+        const currentId = `dropzone-${contador}`;
+        const inputName = `imagen-${contador}`;
+
+        $("#papa").append(
+          `
+    <div id='${currentId}' class='flex flex-col items-center justify-center w-full'>
+      <label for='${inputName}' class='flex flex-col items-center justify-center w-64 h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50'>
+        <div class='flex flex-col items-center justify-center pt-5 pb-6'>
+          <svg class='w-8 h-8 mb-4 text-gray-500 dark:text-gray-400' aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 16' ><path stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2'/> </svg>
+          <p class='mb-2 text-sm text-gray-500 dark:text-gray-400'>
+            <span class='font-semibold'>Click to upload</span> or drag and drop
+          </p>
+        </div>
+        <input id='${inputName}' type='file' name='${inputName}' class='hidden' />
+      </label>
+      <div class="flex gap-10">
+          
+          <div onclick="plus()">
+            <i class="fa-solid fa-plus text-white"></i>
+          </div>
+          <div class="text-white" >
+            <i class="fa-solid fa-minus" onclick="minus(${contador})"></i>
+          </div>
+      </div>
+    </div>
+    `
+        );
+        $("input[name='contador']").val(contador);
+      }
+
+      function minus(targetIndex) {
+        if (contador > 1) {
+          const targetId = `dropzone-${targetIndex}`;
+          console.log("idddd", targetId);
+          const targetInputName = `imagen-${targetIndex}`;
+
+          $(`#${targetId}`).remove();
+          console.log("Elemento eliminado con índice:", targetIndex);
+
+          contador--;
+
+          console.log("contador actualizado:", contador);
+
+          // Actualizar los índices de los dropzones e inputs restantes
+          $("#papa")
+            .children()
+            .each(function (index) {
+              const newIndex = index + 1;
+              const currentDropzone = $(this);
+              const currentId = `dropzone-${newIndex}`;
+              const currentInputName = `imagen-${newIndex}`;
+
+              // Actualizar el id del dropzone
+              currentDropzone.attr("id", currentId);
+
+              // Actualizar el nombre del input dentro del dropzone
+              currentDropzone
+                .find('input[type="file"]')
+                .attr("name", currentInputName);
+
+              // Actualizar el evento onclick del botón "menos"
+              currentDropzone
+                .find(".fa-minus")
+                .attr("onclick", `minus(${newIndex})`);
+            });
+          $("input[name='contador']").val(contador);
+        }
+      }
+
+      // function minus() { // if (contador > 1) { // contador--; //
+      //$("#papa").children().last().remove(); // console.log(contador); // } // }
+    </script>
+  </body>
+</html>
