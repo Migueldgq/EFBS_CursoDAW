@@ -94,7 +94,7 @@
                 class="rounded-t-3xl justify-center grid h-80 object-cover" alt="movie.title" />
 
               <div class="group p-6 grid z-10">
-                <a href=# class="group-hover:text-cyan-700 font-bold sm:text-2xl line-clamp-2">
+                <a href=# class=" font-bold sm:text-2xl line-clamp-2">
                   <?php echo $name ?>
                 </a>
                 <span class="text-slate-400 pt-2 font-semibold">
@@ -108,6 +108,10 @@
                 </div>
 
               </div>
+              <button class="pb-5">
+                <a href="reservabutacas.php?evento=<?php echo $name ?>"
+                  class="text-slate-400 pt-2 font-semibold hover:text-cyan-700">Reservar Butaca</a>
+              </button>
             </div>
           </div>
 

@@ -47,7 +47,7 @@
                                 <a href="admin.html"
                                     class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Crear
                                     eventos</a>
-                                <a href="altapersonal.php"
+                                <a href="index.php"
                                     class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ver
                                     eventos</a>
                             </div>
@@ -65,11 +65,42 @@
             </div>
         </nav>
     </header>
-    <section class="flex items-center justify-center">
+    <section class="flex items-center justify-center pt-10">
+        <article>
+            <?php
+
+            $evento = $_GET["evento"];
+
+            echo " <h1 class='text-center font-bold'> Reserva de butacas para $evento</h1> "
+
+                ?>
+        </article>
+    </section>
+    <section class="flex items-center justify-center flex-col">
         <div class="butaca-table w-[25rem] h-[25rem] grid grid-cols-5 ">
 
         </div>
+        <button id="reservationButton"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+            Confirmar reserva
+        </button>
+        <article class="flex items-center justify-center gap-5 mt-5">
+            <div class="flex items-center justify-center gap-5">
+                <p class="text-center font-bold">Butacas disponibles</p>
+                <i class="fas fa-couch text-2xl text-green-800"></i>
+            </div>
+            <div class="flex items-center justify-center gap-5">
+                <p class="text-center font-bold">Butacas Reservadas</p>
+                <i class="fas fa-couch text-2xl text-red-600"></i>
+            </div>
+            <div class="flex items-center justify-center gap-5">
+                <p class="text-center font-bold">Butacas Seleccionadas: </p>
+                <i class="fas fa-couch text-2xl text-blue-600"></i>
+            </div>
+        </article>
     </section>
+
+
 
 </body>
 <script>
@@ -107,14 +138,79 @@
     // });
 
 
+    let butacasReservadas = []
+
+    <?php
+
+    $evento = $_GET["evento"];
+
+
+    ?>
 
     for (let i = 1; i < 26; i++) {
-        $(".butaca-table").append(`<div id="${i}" class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>`);
+        $(".butaca-table").append(`<div id="${i}" class="flex text-green-800 items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-900"></i></div>`);
     }
 
     $(".butaca-table div").on("click", function () {
 
-        console.log($(this).attr("id"));
+
+        //console.log($(this).attr("id"));
+
+
+        let IdButacadaSelected = $(this).attr("id");
+
+
+
+        if ($.inArray(IdButacadaSelected, butacasReservadas) != -1) {
+            $(this).removeClass("text-blue-600").addClass("text-green-800");
+            butacasReservadas.splice(butacasReservadas.indexOf(IdButacadaSelected), 1);
+        } else {
+            $(this).removeClass("text-green-800").addClass("text-blue-600");
+            butacasReservadas.push(IdButacadaSelected);
+        }
+
+
+
+
+        console.log(butacasReservadas);
+
+        let butacasSeleccionadasCantidad = butacasReservadas.length
+
+        console.log("Cantidad de butacas seleccionadas", butacasSeleccionadasCantidad);
+
+
+
+
+    });
+
+
+    $("#reservationButton").on("click", function () {
+        butacasReservadasJSONEADAS = JSON.stringify(butacasReservadas)
+
+        $.post("insertarReservas.php?evento=<?php echo $evento ?>", { butacas: butacasReservadasJSONEADAS }, function (data) {
+
+
+            alert("Reserva insertada correctamente");
+
+        });
+    });
+
+    $.post("obtenerReservas.php?evento=<?php echo $evento ?>", {}, function (butacas) {
+
+        let butacasDB = JSON.parse(butacas)
+        console.log("ButacasDB", butacasDB);
+        console.log(butacasReservadas);
+
+        let butacasDBCantidad = butacasDB.length;
+
+        console.log("Cantidad de butacas no disponibles", butacasDBCantidad);
+
+
+        for (let i = 0; i < butacasDB.length; i++) {
+            $(`#${butacasDB[i]}`).addClass("text-red-600");
+            $(`#${butacasDB[i]}`).css("pointer-events", "none"); // Deshabilito los eventos de raton y no me deja clickarlo
+        }
+
     });
 
 
