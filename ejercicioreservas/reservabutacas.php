@@ -11,11 +11,44 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        #title {
+            font-family: 'Bebas Neue', cursive;
+        }
+
+        #backgroundImage {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #backgroundImage .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.2;
+            /* Ajusta la opacidad aquí */
+            z-index: -1;
+        }
+
+        #backgroundImage>* {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-300 ">
+
+<body class="bg-white-900 ">
     <header>
-        <nav class="bg-gray-800">
+        <nav class="bg-black">
             <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                 <div class="relative flex h-16 items-center justify-between">
                     <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -38,15 +71,10 @@
                     </div>
                     <div class="flex flex-1 items-center justify-center sm:items-stretch">
                         <div class="flex flex-shrink-0 items-center">
-                            <img class="h-8 w-auto"
-                                src="https://i.pinimg.com/originals/93/d8/3f/93d83fd82b108656864a97259a29d8f9.jpg"
-                                alt="Your Company" />
+                            <p id="title" class="text-white text-xl">Eventos Miguelonsio</p>
                         </div>
                         <div class="hidden sm:ml-6 sm:block">
                             <div class="flex space-x-4">
-                                <a href="admin.html"
-                                    class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Crear
-                                    eventos</a>
                                 <a href="index.php"
                                     class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ver
                                     eventos</a>
@@ -65,77 +93,47 @@
             </div>
         </nav>
     </header>
-    <section class="flex items-center justify-center pt-10">
-        <article>
-            <?php
+    <main id="backgroundImage" class="flex items-center justify-center h-[100vh] flex-col">
+        <div class="background-overlay"></div>
+        <section class="flex items-center justify-center ">
+            <article>
+                <?php
 
-            $evento = $_GET["evento"];
+                $evento = $_GET["evento"];
 
-            echo " <h1 class='text-center font-bold'> Reserva de butacas para $evento</h1> "
+                echo " <h1 class='text-center font-bold'> Reserva de butacas para $evento</h1> "
 
-                ?>
-        </article>
-    </section>
-    <section class="flex items-center justify-center flex-col">
-        <div class="butaca-table w-[25rem] h-[25rem] grid grid-cols-5 ">
+                    ?>
+            </article>
+        </section>
+        <section class="flex items-center justify-center flex-col">
+            <div class="butaca-table w-[25rem] h-[25rem] grid grid-cols-5 ">
 
-        </div>
-        <button id="reservationButton"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-            Confirmar reserva
-        </button>
-        <article class="flex items-center justify-center gap-5 mt-5">
-            <div class="flex items-center justify-center gap-5">
-                <p class="text-center font-bold">Butacas disponibles</p>
-                <i class="fas fa-couch text-2xl text-green-800"></i>
             </div>
-            <div class="flex items-center justify-center gap-5">
-                <p class="text-center font-bold">Butacas Reservadas</p>
-                <i class="fas fa-couch text-2xl text-red-600"></i>
-            </div>
-            <div class="flex items-center justify-center gap-5">
-                <p class="text-center font-bold">Butacas Seleccionadas: </p>
-                <i class="fas fa-couch text-2xl text-blue-600"></i>
-            </div>
-        </article>
-    </section>
-
-
-
+            <button id="reservationButton"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                Confirmar reserva
+            </button>
+            <article class="flex items-center justify-center gap-5 mt-5">
+                <div class="flex items-center justify-center gap-2">
+                    <i class="fas fa-couch text-2xl text-green-800"></i>
+                    <p id="butacasAvailable" class="text-center font-bold">Butacas disponibles: </p>
+                </div>
+                <div class="flex items-center justify-center gap-2">
+                    <i class="fas fa-couch text-2xl text-red-600"></i>
+                    <p id="butacasReserved" class="text-center font-bold">Butacas Reservadas: 0</p>
+                </div>
+                <div class="flex items-center justify-center gap-2">
+                    <i class="fas fa-couch text-2xl text-blue-600"></i>
+                    <p id="butacasSelected" class="text-center font-bold">Butacas Seleccionadas: 0 </p>
+                </div>
+            </article>
+        </section>
+    </main>
 </body>
+
+
 <script>
-
-    // let butacas = [
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>',
-    //     '<div class="flex items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-500"></i></div>'
-    // ];
-
-
-    // $.each(butacas, function () {
-    //     $(".butaca-table").append(this);
-    // });
-
-    // $("butaca-table").children().on("click", function () {
-    //     console.log("hola");
-    // });
 
 
     let butacasReservadas = []
@@ -148,7 +146,8 @@
     ?>
 
     for (let i = 1; i < 26; i++) {
-        $(".butaca-table").append(`<div id="${i}" class="flex text-green-800 items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-900"></i></div>`);
+        $(".butaca-table").append(`<div id="${i}" class="flex flex-col text-green-800 items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-900"></i>
+        <p>Butaca ${i}</p></div>`);
     }
 
     $(".butaca-table div").on("click", function () {
@@ -180,8 +179,11 @@
 
 
 
+        $("#butacasSelected").text("Butacas seleccionadas: " + butacasSeleccionadasCantidad);
+
 
     });
+
 
 
     $("#reservationButton").on("click", function () {
@@ -205,6 +207,10 @@
 
         console.log("Cantidad de butacas no disponibles", butacasDBCantidad);
 
+        $("#butacasReserved").text("Butacas reservadas: " + butacasDBCantidad);
+
+        $("#butacasAvailable").text("Butacas disponibles: " + (25 - butacasDBCantidad));
+
 
         for (let i = 0; i < butacasDB.length; i++) {
             $(`#${butacasDB[i]}`).addClass("text-red-600");
@@ -212,6 +218,14 @@
         }
 
     });
+
+    $.post("getEventBackgroundImage.php?evento=<?php echo $evento ?>", {}, function (data) {
+        let datos = JSON.parse(data);
+        let ruta = `./eventos/${datos[1]}/${datos[0]}`;
+        $(".background-overlay").css("background-image", `url("${ruta}")`);
+
+
+    })
 
 
 
