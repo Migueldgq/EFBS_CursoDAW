@@ -6,6 +6,7 @@ $img = $_FILES["image"]["name"];
 $tempIMG = $_FILES["image"]["tmp_name"];
 $author = $_POST["author"];
 $date = $_POST["date"];
+$aforo = $_POST["aforo"];
 
 include "funciones.php";
 
@@ -14,6 +15,6 @@ $ruta = "./eventos/$name/$img";
 move_uploaded_file($tempIMG, $ruta);
 
 
-InsertEvent($name, $desc, $img, $author, $date);
+InsertEvent($name, $desc, $img, $author, $date, $aforo);
 
 

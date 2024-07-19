@@ -112,7 +112,7 @@
             </div>
             <button id="reservationButton"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                Confirmar reserva
+                Reservar
             </button>
             <article class="flex items-center justify-center gap-5 mt-5">
                 <div class="flex items-center justify-center gap-2">
@@ -145,79 +145,96 @@
 
     ?>
 
-    for (let i = 1; i < 26; i++) {
-        $(".butaca-table").append(`<div id="${i}" class="flex flex-col text-green-800 items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-900"></i>
-        <p>Butaca ${i}</p></div>`);
+    function refresh() {
+        window.location.reload();
     }
 
-    $(".butaca-table div").on("click", function () {
+    function pintaButacas(aforo) {
+        console.log("Aforo en pintabutacas", aforo);
 
-
-        //console.log($(this).attr("id"));
-
-
-        let IdButacadaSelected = $(this).attr("id");
-
-
-
-        if ($.inArray(IdButacadaSelected, butacasReservadas) != -1) {
-            $(this).removeClass("text-blue-600").addClass("text-green-800");
-            butacasReservadas.splice(butacasReservadas.indexOf(IdButacadaSelected), 1);
-        } else {
-            $(this).removeClass("text-green-800").addClass("text-blue-600");
-            butacasReservadas.push(IdButacadaSelected);
+        for (let i = 1; i <= aforo; i++) {
+            $(".butaca-table").append(`<div id="${i}" class="flex flex-col text-green-800 items-center justify-center"><i class="fas fa-couch text-2xl hover:text-slate-900"></i>
+        <p>Butaca ${i}</p></div>`);
         }
+        pintarReservadas();
+        selectButaca();
+    }
+
+    function selectButaca() {
+        $(".butaca-table div").on("click", function () {
+
+
+            //console.log($(this).attr("id"));
+
+
+            let IdButacadaSelected = $(this).attr("id");
+
+
+
+            if ($.inArray(IdButacadaSelected, butacasReservadas) != -1) {
+                $(this).removeClass("text-blue-600").addClass("text-green-800");
+                butacasReservadas.splice(butacasReservadas.indexOf(IdButacadaSelected), 1);
+            } else {
+                $(this).removeClass("text-green-800").addClass("text-blue-600");
+                butacasReservadas.push(IdButacadaSelected);
+            }
 
 
 
 
-        console.log(butacasReservadas);
+            console.log(butacasReservadas);
 
-        let butacasSeleccionadasCantidad = butacasReservadas.length
+            let butacasSeleccionadasCantidad = butacasReservadas.length
 
-        console.log("Cantidad de butacas seleccionadas", butacasSeleccionadasCantidad);
-
-
-
-        $("#butacasSelected").text("Butacas seleccionadas: " + butacasSeleccionadasCantidad);
+            console.log("Cantidad de butacas seleccionadas", butacasSeleccionadasCantidad);
 
 
-    });
+
+            $("#butacasSelected").text("Butacas seleccionadas: " + butacasSeleccionadasCantidad);
+
+
+        });
+    }
 
 
 
     $("#reservationButton").on("click", function () {
-        butacasReservadasJSONEADAS = JSON.stringify(butacasReservadas)
+        let butacasReservadasJSONEADAS = JSON.stringify(butacasReservadas);
+        if (butacasReservadas.length == 0) {
+            alert("No has seleccionado ninguna butaca");
+            return;
+        }
+        if (confirm("¿Deseas realizar la reserva?")) {
+            window.location.href = "confirmarReservaPage.php?evento=<?php echo $evento ?>&butacas=" + butacasReservadasJSONEADAS;
+        } else {
+            // Si el usuario selecciona "Cancelar", no hacemos nada y permanecemos en la misma página.
+        }
+    });
 
-        $.post("insertarReservas.php?evento=<?php echo $evento ?>", { butacas: butacasReservadasJSONEADAS }, function (data) {
+    function pintarReservadas() {
+        $.post("obtenerReservas.php?evento=<?php echo $evento ?>", {}, function (butacas) {
+
+            let butacasDB = JSON.parse(butacas)
+            console.log("ButacasDB", butacasDB);
+            console.log(butacasReservadas);
+
+            let butacasDBCantidad = butacasDB.length;
+
+            console.log("Cantidad de butacas no disponibles", butacasDBCantidad);
+
+            $("#butacasReserved").text("Butacas reservadas: " + butacasDBCantidad);
+
+            $("#butacasAvailable").text("Butacas disponibles: " + (25 - butacasDBCantidad));
 
 
-            alert("Reserva insertada correctamente");
+            for (let i = 0; i < butacasDB.length; i++) {
+                $(`#${butacasDB[i]}`).addClass("text-red-600");
+                $(`#${butacasDB[i]}`).css("pointer-events", "none"); // Deshabilito los eventos de raton y no me deja clickarlo
+            }
 
         });
-    });
 
-    $.post("obtenerReservas.php?evento=<?php echo $evento ?>", {}, function (butacas) {
-
-        let butacasDB = JSON.parse(butacas)
-        console.log("ButacasDB", butacasDB);
-        console.log(butacasReservadas);
-
-        let butacasDBCantidad = butacasDB.length;
-
-        console.log("Cantidad de butacas no disponibles", butacasDBCantidad);
-
-        $("#butacasReserved").text("Butacas reservadas: " + butacasDBCantidad);
-
-        $("#butacasAvailable").text("Butacas disponibles: " + (25 - butacasDBCantidad));
-
-
-        for (let i = 0; i < butacasDB.length; i++) {
-            $(`#${butacasDB[i]}`).addClass("text-red-600");
-            $(`#${butacasDB[i]}`).css("pointer-events", "none"); // Deshabilito los eventos de raton y no me deja clickarlo
-        }
-
-    });
+    }
 
     $.post("getEventBackgroundImage.php?evento=<?php echo $evento ?>", {}, function (data) {
         let datos = JSON.parse(data);
@@ -226,6 +243,15 @@
 
 
     })
+
+    $.post("getEventAforo.php?evento='<?php echo $evento ?>'", {}, function (data) {
+
+        console.log("Aforo", JSON.parse(data));
+
+        aforoDB = JSON.parse(data);
+
+        pintaButacas(aforoDB);
+    });
 
 
 
