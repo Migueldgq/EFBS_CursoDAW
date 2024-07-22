@@ -18,7 +18,7 @@ foreach ($butacasDJSON as $butaca) {
 
 
 
-// echo "<script>
-// alert('Reserva insertada correctamente')
-// window.location.href='descargarentradas.php';
-// </script>";
+echo "<script>
+ alert('Reserva insertada correctamente')
+ window.location.href='descargarentradas.php';
+ </script>";

@@ -125,7 +125,7 @@
 
 
             </article>
-            <form action="confirmarReserva.php?evento=<?php echo $evento ?>&butacas=<?php echo  $buta ?>" method="POST"
+            <form action='confirmarReserva.php?evento=<?php echo $evento ?>&butacas=<?php echo $buta ?>' method="POST"
                 class=" w-full flex flex-col items-center justify-center">
                 <section class="flex flex-col items-center justify-center gap-5 w-full">
                     <article class="flex flex-col w-full">

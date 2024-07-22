@@ -107,7 +107,7 @@
             </article>
         </section>
         <section class="flex items-center justify-center flex-col">
-            <div class="butaca-table w-[25rem] h-[25rem] grid grid-cols-5 ">
+            <div class="butaca-table w-[25rem] h-[30rem] grid grid-cols-5 ">
 
             </div>
             <button id="reservationButton"
