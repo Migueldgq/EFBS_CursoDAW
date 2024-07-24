@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body
+    style="
+      background-image: url(./IMGs/bg.gif);
+      background-repeat: no-repeat;
+      background-size: cover;
+    "
+  >
+    <main class="flex flex-col items-center justify-center h-screen w-full">
+      <section id="ahorcado">
+        <img class="max-w-60 flex-none" src="" alt="" />
+      </section>
+      <section class="flex flex-col items-center justify-center gap-5">
+        <section id="ahorcadowords" class="flex gap-5"></section>
+        <input
+          type="text"
+          name="palabra"
+          id="letra"
+          maxlength="1"
+          class="w-10 h-10 border border-black text-center"
+          required
+        />
+      </section>
+      <section class="flex gap-5 mt-5 items-center">
+        <button id="newWordButton" class="px-4 py-2 bg-blue-500 text-white">
+          Generar palabra
+        </button>
+        <button
+          id="checkLetterButton"
+          class="px-4 py-2 bg-green-500 text-white"
+        >
+          Comprobar Letra
+        </button>
+        <p id="fallos" class="text-white font-boldy">Fallos: 0</p>
+      </section>
+      <section
+        id="lose"
+        class="flex flex-col justify-center items-center gap-5"
+      ></section>
+    </main>
+    <script>
+      let palabra = [];
+      let fallos = 0;
+      let aciertos = 0;
+
+      function renderNewAhorcado() {
+        $.post("getRandomWord.php", function (data) {
+          palabra = data.split("");
+          $("#ahorcadowords").empty(); // Limpiar contenido anterior
+          console.log(palabra);
+          palabra.forEach(() => {
+            $("#ahorcadowords").append(
+              `<input type="text" class="w-10 h-10 border-b border-black text-center" value="" disabled/>`
+            );
+          });
+        });
+
+        $("#lose").empty();
+        $("#letra").attr("disabled", false);
+        //$("#checkLetterButton").attr("disabled", false);
+        //$("#newWordButton").attr("disabled", false);
+        $("#checkLetterButton").css("display", "block");
+        $("#newWordButton").css("display", "block");
+        fallos = 0; //Reiniciar el conteo de fallos
+        aciertos = 0; // Reiniciar el conteo de aciertos
+        $("#fallos").text("Fallos: " + fallos);
+        $("#ahorcado img").attr("src", "");
+        $("#ahorcadowords input").val("");
+      }
+
+      $(document).ready(function () {
+        $("#newWordButton").click(function () {
+          $.post("getRandomWord.php", function (data) {
+            palabra = data.split("");
+            $("#ahorcadowords").empty(); // Limpiar contenido anterior
+            console.log(palabra);
+            palabra.forEach(() => {
+              $("#ahorcadowords").append(
+                `<input type="text" class="w-10 h-10 border-b border-black text-center" value="" disabled/>`
+              );
+            });
+          });
+        });
+
+        $("#checkLetterButton").click(function () {
+          let letraIntroducida = $("#letra").val().toUpperCase();
+          console.log(letraIntroducida);
+
+          if (!letraIntroducida) {
+            return;
+          }
+
+          let letraEncontrada = false;
+          palabra.forEach((letra, index) => {
+            if (letra.toUpperCase() === letraIntroducida) {
+              $("#ahorcadowords input").eq(index).val(letraIntroducida);
+              letraEncontrada = true;
+              aciertos++;
+            }
+          });
+
+          if (!letraEncontrada) {
+            fallos++;
+            $("#fallos").text("Fallos: " + fallos);
+            console.log("Haz fallado");
+
+            switch (fallos) {
+              case 1:
+                $("#ahorcado img").attr("src", "./IMGs/ahorcado_6.png");
+                break;
+              case 2:
+                $("#ahorcado img").attr("src", "./IMGs/ahorcado_5.png");
+                break;
+              case 3:
+                $("#ahorcado img").attr("src", "./IMGs/ahorcado_4.png");
+                break;
+              case 4:
+                $("#ahorcado img").attr("src", "./IMGs/ahorcado_3.png");
+                break;
+              case 5:
+                $("#ahorcado img").attr("src", "./IMGs/ahorcado_2.png");
+                break;
+              case 6:
+                $("#ahorcado img").attr("src", "./IMGs/ahorcado_1.png");
+                break;
+              case 7:
+                $("#ahorcado img").attr("src", "./IMGs/ahorcado_0.png");
+                break;
+            }
+          }
+
+          $("#letra").val("");
+
+          if (fallos >= 7) {
+            $("#lose").append(
+              `<img id="gameover" class="max-w-60" src="./IMGs/gameover.gif">`
+            );
+            $("#letra").attr("disabled", true);
+            //$("#checkLetterButton").attr("disabled", true);
+            //$("#newWordButton").attr("disabled", true);
+            $("#checkLetterButton").css("display", "none");
+            $("#newWordButton").css("display", "none");
+            $("#lose").append(
+              `<button onclick="renderNewAhorcado()" class="px-4 py-2 bg-yellow-500 text-white">Volver a jugar</button>`
+            );
+          }
+
+          if (aciertos == palabra.length) {
+            $("#letra").attr("disabled", true);
+            //$("#checkLetterButton").attr("disabled", true);
+            //$("#newWordButton").attr("disabled", true);
+            $("#checkLetterButton").css("display", "none");
+            $("#newWordButton").css("display", "none");
+            $("#lose").append(
+              `<img class="max-w-60" id="win" src="./IMGs/win.gif">`
+            );
+            $("#lose").append(
+              `<button onclick="renderNewAhorcado()" class="px-4 py-2 bg-yellow-500 text-white">Volver a jugar</button>`
+            );
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

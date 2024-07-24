@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body
+    style="
+      background-image: url(./IMGs/bg.gif);
+      background-repeat: no-repeat;
+      background-size: cover;
+    "
+    class="w-screen h-screen"
+  >
+    <header class="flex items-center justify-center p-5">
+      <h1 class="text-3xl font-bold">Bienvenido al jueguito del ahorcao</h1>
+    </header>
+    <main class="flex items-center justify-center">
+      <button onclick="renderAhorcado()">
+        <img src="./IMGs/start.gif" alt="" />
+      </button>
+    </main>
+
+    <script>
+      function renderAhorcado() {
+        window.location.href = "./ahorcado.html";
+      }
+    </script>
+  </body>
+</html>
