@@ -55,6 +55,7 @@
       let palabra = [];
       let fallos = 0;
       let aciertos = 0;
+      let letrasIntroducidas = [];
 
       function renderNewAhorcado() {
         $.post("getRandomWord.php", function (data) {
@@ -79,6 +80,7 @@
         $("#fallos").text("Fallos: " + fallos);
         $("#ahorcado img").attr("src", "");
         $("#ahorcadowords input").val("");
+        letrasIntroducidas = [];
       }
 
       $(document).ready(function () {
@@ -97,11 +99,19 @@
 
         $("#checkLetterButton").click(function () {
           let letraIntroducida = $("#letra").val().toUpperCase();
-          console.log(letraIntroducida);
 
           if (!letraIntroducida) {
             return;
           }
+
+          if (letrasIntroducidas.includes(letraIntroducida)) {
+            alert("Ya has introducido esta letra");
+            $("#letra").val("");
+            return;
+          }
+
+          letrasIntroducidas.push(letraIntroducida);
+          console.log(letrasIntroducidas);
 
           let letraEncontrada = false;
           palabra.forEach((letra, index) => {
@@ -115,7 +125,7 @@
           if (!letraEncontrada) {
             fallos++;
             $("#fallos").text("Fallos: " + fallos);
-            console.log("Haz fallado");
+            console.log("Has fallado");
 
             switch (fallos) {
               case 1:
@@ -142,15 +152,13 @@
             }
           }
 
-          $("#letra").val("");
+          $("#letra").val(""); // Clear the input field
 
           if (fallos >= 7) {
             $("#lose").append(
               `<img id="gameover" class="max-w-60" src="./IMGs/gameover.gif">`
             );
             $("#letra").attr("disabled", true);
-            //$("#checkLetterButton").attr("disabled", true);
-            //$("#newWordButton").attr("disabled", true);
             $("#checkLetterButton").css("display", "none");
             $("#newWordButton").css("display", "none");
             $("#lose").append(
@@ -160,8 +168,6 @@
 
           if (aciertos == palabra.length) {
             $("#letra").attr("disabled", true);
-            //$("#checkLetterButton").attr("disabled", true);
-            //$("#newWordButton").attr("disabled", true);
             $("#checkLetterButton").css("display", "none");
             $("#newWordButton").css("display", "none");
             $("#lose").append(
