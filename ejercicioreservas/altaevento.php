@@ -12,7 +12,7 @@ include "funciones.php";
 
 mkdir("./eventos/$name", 0777);
 $ruta = "./eventos/$name/$img";
-move_uploaded_file($tempIMG, $ruta);
+_uploaded_file($tempIMG, $ruta);
 
 
 InsertEvent($name, $desc, $img, $author, $date, $aforo);

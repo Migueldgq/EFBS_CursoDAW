@@ -61,24 +61,27 @@
         </section>
     </main>
     <script>
-        $("form").on("submit", function (e) {
-            e.preventDefault();
-
-            let dni = $("#dni").val();
+        $(document).ready(function () {
 
 
+            $("form").on("submit", function (e) {
+                e.preventDefault();
 
-            $("#tablaIncidencias").empty();
+                let dni = $("#dni").val();
 
+                $("#tablaIncidencias").empty();
 
-            $.post("./consultas/getUserIncidences.php", { dni: dni }, function (data) {
-                if (data == 0) {
-                    $("#buscadorIncidencias").append("<p id='error' class='text-large font-bold text-gray-700 mb-2 mt-2'>El DNI que has introducido es incorrecto</p>");
-                } else {
-                    $("#error").remove();
-                    $("#tablaIncidencias").append(data);
-                }
+                $.post("./consultas/getUserIncidences.php", { dni: dni }, function (data) {
+                    if (data == 0) {
+                        $("#buscadorIncidencias").append("<p id='error' class='text-large font-bold text-gray-700 mb-2 mt-2'>El DNI que has introducido es incorrecto</p>");
+                    } else {
+                        $("#error").remove();
+                        $("#tablaIncidencias").append(data);
+                    }
+                });
             });
+
+
         });
     </script>
 </body>

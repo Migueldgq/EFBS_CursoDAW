@@ -34,14 +34,15 @@ $justificada = $_GET['justificada'];
         <section class="w-full h-screen bg-gray-200 overflow-hidden">
             <div id="justificarIncidencia" class="w-full h-full hidden flex-col justify-center items-center">
                 <p class="text-xl font-bold text-gray-700 mb-5">Justifique su incidencia</p>
-                <form class="max-w-md mx-auto">
-                    <div class="relative z-0 w-full mb-5 group">
+                <form class="max-w-md mx-auto" enctype="multipart/form-data">
+                    <div class="relative z-0 w-full mb-5 group flex flex-col gap-5">
                         <select name="motivo" id="">
                             <option value="" disabled selected>Seleccione un motivo</option>
                             <option value="Atasco">Atasco</option>
                             <option value="Personal">Personal</option>
                             <option value="Médico">Médico</option>
                         </select>
+                        <input type="file" name="justificante" class="hidden">
                     </div>
 
 
@@ -68,23 +69,45 @@ $justificada = $_GET['justificada'];
             $("#justificarIncidencia").css("display", "flex");
         }
 
+
+        $('select[name="motivo"]').on('change', function () {
+            let motivo = $(this).val();
+            if (motivo == "Médico") {
+                $('input[type="file"]').css("display", "block");
+            } else {
+                $('input[type="file"]').css("display", "none");
+            }
+        });
+
         $("form").on("submit", function (event) {
             event.preventDefault();
+
+            let formData = new FormData();
+            let justificante = $('input[type="file"]').prop('files')[0];
             let motivo = $('select[name="motivo"]').val();
-            console.log(motivo);
+
+            formData.append('idIncidencia', idIncidencia);
+            formData.append('motivo', motivo);
+            formData.append('justificante', justificante);
+
+            $.ajax({
+                url: './justificarIncidencia.php',
+                type: 'POST',
+                data: formData,
+                processData: false, // Necesario para evitar que jQuery procese los datos
+                contentType: false, // Necesario para evitar que jQuery establezca un encabezado de contenido incorrecto
+                success: function (data) {
+                    if (data == 1) {
+                        alert("Incidencia justificada correctamente");
+                        window.history.back();
 
 
-            $.post("./justificarIncidencia.php", {
-                idIncidencia: idIncidencia, motivo: motivo
-            }, function (data) {
-                if (data == 1) {
-                    alert("Incidencia justificada correctamente");
-                    window.history.back();
+                    } else {
+                        alert(data);
+                    }
                 }
-            })
-        })
-
-
+            });
+        });
 
 
 

@@ -9,8 +9,6 @@ $getTrabajadorInfo = "SELECT * FROM trabajadores WHERE dni_trab = '$dni'";
 
 $trabajadorHorario = $conexion->query($getTrabajadorHorario);
 
-//echo $dni;
-
 if ($trabajadorHorario->num_rows <= 0) {
     echo "No existe el trabajador";
 } else {
@@ -21,66 +19,81 @@ if ($trabajadorHorario->num_rows <= 0) {
         $nom = $trabajador['nom_trab'];
         $ape = $trabajador['ape_trab'];
     }
-    $insertFichaje = "INSERT INTO fichajesentrada (id_trabajador) VALUES ('$idTrabajador')";
-    $conexion->query($insertFichaje);
 
-    //echo "Fichaje de entrada registrado";
-
-
-    // Saco el id de horario que tiene el trabajador
-    foreach ($trabajadorHorario as $horario) {
-        $idHorario = $horario['id_horario'];
-        //echo $idHorario . "<br>";
-    }
-    // Obtengo el horario por el Id de horario que tiene el trabajador
-    $getHorario = "SELECT * FROM horarios WHERE id_horario = '$idHorario'";
-    $horarios = $conexion->query($getHorario);
-    foreach ($horarios as $horario) {
-        $entrada = substr($horario['start_time'], 0, 5);
-        $salida = substr($horario['end_time'], 0, 5);
-
-        //echo $entrada . " - " . $salida;
-    }
+    // Verificar si ya existe un fichaje de entrada para el trabajador en la fecha actual
+    $fechaActual = date("Y-m-d");
+    $checkFichaje = "SELECT * FROM fichajesentrada WHERE id_trabajador = '$idTrabajador' AND DATE(hora_fichajeEntrada) = '$fechaActual'";
+    $resultadoFichaje = $conexion->query($checkFichaje);
 
     //Obtengo la hora de fichaje
-
     $getHoraFichaje = "SELECT * FROM fichajesentrada WHERE id_trabajador = '$idTrabajador' ORDER BY id_trabajador DESC LIMIT 1";
     $horaFichaje = $conexion->query($getHoraFichaje);
     foreach ($horaFichaje as $hora) {
-        $hora = $hora["hora_fichajeEntrada"];
-
-        //echo $hora;
+        $horaa = $hora["hora_fichajeEntrada"];
     }
 
-    // Extraer solo la hora y los minutos de la hora de fichaje
-    $horaFichajeHHMM = substr($hora, 11, 5); // HH:MM
-    //echo "Hora de fichaje (HH:MM): $horaFichajeHHMM<br>";
+    $horaFichajeHHMM = substr($horaa, 11, 5);
 
-    // Comparar la hora de fichaje con la hora de entrada
-    $horaEntrada = strtotime($entrada);
-    $horaFichajeTime = strtotime($horaFichajeHHMM);
-
-    $isTarde = $horaFichajeTime > strtotime('+30 minutes', $horaEntrada);
-
-    if ($isTarde) {
-
-        $createIncidencia = "INSERT INTO incidencias (id_trabajador) VALUES ('$idTrabajador')";
-        $conexion->query($createIncidencia);
-
+    if ($resultadoFichaje->num_rows > 0) {
         echo json_encode([
-            'tarde' => $isTarde,
+
             'nombre' => $nom,
             'apellido' => $ape,
-            'horaFichaje' => $horaFichajeHHMM
+            'horaFichaje' => $horaFichajeHHMM,
+            'fichadoHoy' => true
         ]);
-
 
     } else {
-        echo json_encode([
-            'tarde' => $isTarde,
-            'nombre' => $nom,
-            'apellido' => $ape,
-            'horaFichaje' => $horaFichajeHHMM
-        ]);
+        $insertFichaje = "INSERT INTO fichajesentrada (id_trabajador) VALUES ('$idTrabajador')";
+        $conexion->query($insertFichaje);
+
+        // Saco el id de horario que tiene el trabajador
+        foreach ($trabajadorHorario as $horario) {
+            $idHorario = $horario['id_horario'];
+        }
+
+        // Obtengo el horario por el Id de horario que tiene el trabajador
+        $getHorario = "SELECT * FROM horarios WHERE id_horario = '$idHorario'";
+        $horarios = $conexion->query($getHorario);
+        foreach ($horarios as $horario) {
+            $entrada = substr($horario['start_time'], 0, 5);
+            $salida = substr($horario['end_time'], 0, 5);
+        }
+
+        //Obtengo la hora de fichaje
+        $getHoraFichaje = "SELECT * FROM fichajesentrada WHERE id_trabajador = '$idTrabajador' ORDER BY id_trabajador DESC LIMIT 1";
+        $horaFichaje = $conexion->query($getHoraFichaje);
+        foreach ($horaFichaje as $hora) {
+            $hora = $hora["hora_fichajeEntrada"];
+        }
+
+        $horaFichajeHHMM = substr($hora, 11, 5);
+
+        $horaEntrada = strtotime($entrada);
+        $horaFichajeTime = strtotime($horaFichajeHHMM);
+
+        $isTarde = $horaFichajeTime > strtotime('+30 minutes', $horaEntrada);
+
+        if ($isTarde) {
+            $createIncidencia = "INSERT INTO incidencias (id_trabajador) VALUES ('$idTrabajador')";
+            $conexion->query($createIncidencia);
+
+
+            echo json_encode([
+                'tarde' => $isTarde,
+                'nombre' => $nom,
+                'apellido' => $ape,
+                'horaFichaje' => $horaFichajeHHMM,
+                'fichadoHoy' => false
+            ]);
+        } else {
+            echo json_encode([
+                'tarde' => $isTarde,
+                'nombre' => $nom,
+                'apellido' => $ape,
+                'horaFichaje' => $horaFichajeHHMM,
+                'fichadoHoy' => false
+            ]);
+        }
     }
 }
