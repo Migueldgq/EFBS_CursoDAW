@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+</head>
+<body>
+	<h1>Sistema de fichaje</h1>
+	<form action="fichar.php" method="POST">
+		<input type="text" name="dni" placeholder="DNI" required onblur="buscar()">
+		<br>
+		<div></div>
+		<input type="submit" value="Fichar">
+	</form>
+	<script>
+		function buscar()
+		{
+			var dni = $("input[type=text]").val();
+			$.post(
+					"consultar.php",
+					{eldni:dni},
+					function(echosdelphp)
+					{
+						arrayrecibido = JSON.parse(echosdelphp)
+						//voy a recibir algo para comprobar
+						if(arrayrecibido[0]==1)
+						{
+							//el trabajador existe
+							$("div").html(arrayrecibido[1]);
+						}
+						else
+						{
+							//el trabajador no existe
+							alert("No eres trabajador de aquí");
+						}
+					}
+				);
+		}
+	</script>
+</body>
+</html>
