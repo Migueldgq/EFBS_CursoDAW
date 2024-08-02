@@ -76,7 +76,7 @@
 
 
             </div>
-            <div id="TempranoEntrada" class="w-full h-full hidden flex-col justify-center items-center gap-5">
+            <div id="TempranoSalida" class="w-full h-full hidden flex-col justify-center items-center gap-5">
                 <i class="fa-solid fa-circle-exclamation text-3xl"></i>
                 <p class="text-xl font-bold text-gray-700">Whooooooooppsss haz salido temprano así que se te ha abierto
                     una incidencia</p>
@@ -92,13 +92,13 @@
 
 
             </div>
-            <div id="tempranoEntrada" class=" hidden flex-col justify-center items-center">
+            <div id="tempranoEntrada" class="w-full h-full hidden flex-col justify-center items-center">
                 <p class="text-xl font-medium text-gray-700">Fichaje de entrada realizado con exito</p>
                 <p class="text-medium font-medium text-gray-700" id="nombreTrabajador"></p>
                 <p class="text-medium font-medium text-gray-700" id="dni"></p>
                 <p class="text-medium font-medium text-gray-700" id="horaFichaje"></p>
             </div>
-            <div id="salidaBien" class=" hidden flex-col justify-center items-center">
+            <div id="salidaBien" class="w-full h-full hidden flex-col justify-center items-center">
                 <p class="text-xl font-medium text-gray-700">Fichaje de salida realizado con exito</p>
                 <p class="text-medium font-medium text-gray-700" id="nombreTrabajadorS"></p>
                 <p class="text-medium font-medium text-gray-700" id="dniS"></p>
@@ -133,22 +133,22 @@
 
             $.post("./fichajeEntrada.php", { dni: dni }, function (data) {
 
-                console.log(data);
+                //console.log(data);
                 let datosEmpleado = JSON.parse(data);
 
-                //console.log(datosEmpleado);
+                console.log("Entrada", datosEmpleado);
 
                 //console.log(datosEmpleado.nombre + " " + datosEmpleado.apellido);
 
                 if (datosEmpleado.tarde == true) {
-                    $("#tarde").css("display", "flex");
+                    $("#tardeEntrada").css("display", "flex");
                     $("#fichajeEntrada").css("display", "none");
                     $("#nombreTrabajador").html(datosEmpleado.nombre + " " + datosEmpleado.apellido);
                     $("#dni").html(datosEmpleado.dni);
                     $("#horaFichaje").html("Hora fichaje" + " " + datosEmpleado.horaFichaje);
 
                 } else if (datosEmpleado.tarde == false) {
-                    $("#temprano").css("display", "flex");
+                    $("#tempranoEntrada").css("display", "flex");
                     $("#nombreTrabajador").html(datosEmpleado.nombre + " " + datosEmpleado.apellido);
                     $("#dni").html(datosEmpleado.dni);
                     $("#horaFichaje").html(datosEmpleado.horaFichaje);
@@ -177,7 +177,7 @@
                 //console.log(datosEmpleado.nombre + " " + datosEmpleado.apellido);
 
                 if (datosEmpleado.temprano == true) {
-                    $("#tarde").css("display", "flex");
+                    $("#tempranoSalida").css("display", "flex");
                     $("#fichajeEntrada").css("display", "none");
                     $("#nombreTrabajador").html(datosEmpleado.nombre + " " + datosEmpleado.apellido);
                     $("#dni").html(datosEmpleado.dni);
