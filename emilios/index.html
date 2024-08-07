@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1>Envío de un correo</h1>
+    <form action="envio1.php" method="POST">
+      <input type="email" name="destino" placeholder="Para:" />
+      <br />
+      <input type="text" name="asunto" placeholder="Asunto:" maxlength="120" />
+      <br />
+      <textarea
+        name="mensaje"
+        cols="30"
+        rows="10"
+        placeholder="Escriba su mensaje..."
+        maxlength="600"
+        style="resize: none"
+      ></textarea>
+      <p></p>
+      <br />
+      <input type="submit" value="Enviar" />
+    </form>
+    <script>
+      $("textarea").keyup(function () {
+        $("p").text("Caracteres restantes: " + (600 - $(this).val().length));
+      });
+    </script>
+  </body>
+</html>
