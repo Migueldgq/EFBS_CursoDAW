@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ejercicio calendario</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-sky-950 flex justify-center items-center">
+    <section
+      class="flex flex-col justify-center items-center h-screen w-1/2 gap-5"
+    >
+      <label
+        for="meses"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Selecciona un mes</label
+      >
+      <select
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        id="meses"
+        name="meses"
+      ></select>
+      <table
+        id="calendario"
+        class="table-auto border-collapse border border-gray-400"
+      >
+        <tr id="dias-semana"></tr>
+      </table>
+      <button
+        type="button"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      >
+        Guardar festivos
+      </button>
+    </section>
+    <script>
+      const meses = [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre",
+      ];
+      const dias = [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo",
+      ];
+
+      let totalDias = 0;
+      let primerDiaDelMes = 1;
+      let festivos = [];
+
+      for (let i = 0; i < meses.length; i++) {
+        $("#meses").append(
+          "<option value='" + i + "'>" + meses[i] + "</option>"
+        );
+      }
+
+      for (let i = 0; i < dias.length; i++) {
+        $("#dias-semana").append(
+          "<th class='border bg-sky-600 border-gray-400 p-2 text-white'>" +
+            dias[i] +
+            "</th>"
+        );
+      }
+
+      function actualizarCalendario(mes) {
+        const diasEnMes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        const año = new Date().getFullYear();
+
+        if (
+          mes === 1 &&
+          ((año % 4 === 0 && año % 100 !== 0) || año % 400 === 0)
+        ) {
+          diasEnMes[1] = 29;
+        }
+
+        totalDias = diasEnMes[mes];
+
+        const fecha = new Date(año, mes, 1);
+        primerDiaDelMes = fecha.getDay();
+        if (primerDiaDelMes === 0) {
+          primerDiaDelMes = 7;
+        }
+
+        // Vaciar el calendario antes de actualizar
+        $("#calendario tr").not("#dias-semana").remove();
+
+        let fila = $("<tr></tr>");
+        $("#calendario").append(fila);
+
+        for (let i = 1; i < primerDiaDelMes; i++) {
+          fila.append(
+            "<td class='border border-gray-400 bg-sky-800 p-2'></td>"
+          );
+        }
+
+        // Obtener los días festivos desde la DB
+        $.post("getFestivos.php", { mes: mes + 1 }, function (data) {
+          festivos = JSON.parse(data);
+
+          console.log("Festivos bd", festivos);
+
+          for (let dia = 1; dia <= totalDias; dia++) {
+            let claseFestivo = festivos.includes(dia.toString())
+              ? "border bg-red-500 text-white pointer-events-none border-gray-400"
+              : "border text-white border-gray-400 bg-sky-800 p-2 hover:bg-sky-400";
+            fila.append(
+              `<td class=' ${claseFestivo}' id='${dia}'>` + dia + "</td>"
+            );
+
+            if ((dia + primerDiaDelMes - 1) % 7 === 0) {
+              fila = $("<tr></tr>");
+              $("#calendario").append(fila);
+            }
+          }
+
+          $("tr td").on("click", function () {
+            $(this).toggleClass("bg-sky-400");
+            let dia = $(this).attr("id");
+            if ($(this).hasClass("bg-sky-400")) {
+              festivos.push(dia);
+            } else {
+              festivos.splice(festivos.indexOf(dia), 1);
+            }
+          });
+        });
+      }
+
+      $("#meses").on("change", function () {
+        const mesSeleccionado = parseInt($(this).val());
+        actualizarCalendario(mesSeleccionado);
+      });
+
+      $("button").on("click", function () {
+        console.log(festivos);
+        const mes = parseInt($("#meses").val()) + 1;
+        $.post(
+          "insertFestivos.php",
+          { festivos: JSON.stringify(festivos), mes: mes },
+          function (data) {
+            alert(data);
+            window.location.reload();
+          }
+        );
+      });
+
+      const mesActual = new Date().getMonth();
+      $("#meses").val(mesActual);
+      actualizarCalendario(mesActual);
+
+      const DiaActual = new Date().getDate();
+
+      console.log(DiaActual);
+    </script>
+  </body>
+</html>
