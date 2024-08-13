@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Examen</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="w-full h-screen bg-sky-800">
+    <header
+      class="w-full bg-sky-950 flex justify-center items-center text-white h-10"
+    >
+      <li id="altaCli" class="mx-2 list-none font-semibold hover:underline">
+        Alta cliente
+      </li>
+      <li id="verCli" class="mx-2 list-none font-semibold hover:underline">
+        Ver clientes
+      </li>
+    </header>
+    <section id="form" class="flex flex-col items-center justify-center gap-5">
+      <article class="flex flex-col">
+        <label for="" class="text-white">Nombre</label>
+        <input type="text" name="nom" />
+      </article>
+      <article class="flex flex-col">
+        <label for="" class="text-white">Email</label>
+        <input type="email" name="email" />
+      </article>
+      <article class="flex flex-col">
+        <label for="" class="text-white">DNI</label>
+        <input type="text" name="dni" />
+      </article>
+      <button
+        type="submit"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+      >
+        Enviar
+      </button>
+    </section>
+    <section id="listCli" class="hidden">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500
+      dark:text-gray-400"">
+      <thead
+        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+      >
+        <tr>
+          <th scope="col" class="px-6 py-3">Nombre</th>
+          <th scope="col" class="px-6 py-3">Email</th>
+          <th scope="col" class="px-6 py-3">DNI</th>
+          <th scope="col" class="px-6 py-3">
+            <span class="sr-only">Eliminar</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </section>
+
+    <script>
+      let nom = $("input[name='nom']");
+      let email = $("input[name='email']");
+      let dni = $("input[name='dni']");
+
+      $("button").on("click", (e) => {
+        e.preventDefault();
+
+        $.post(
+          "insertClient.php",
+          {
+            nom: nom.val(),
+            email: email.val(),
+            dni: dni.val(),
+          },
+          (data) => {
+            if (data == 1) {
+              alert("Alta exitosa");
+            } else {
+              alert("Error");
+            }
+          }
+        );
+      });
+
+      $("#verCli").on("click", (e) => {
+        e.preventDefault();
+
+        $("#form").css("display", "none");
+        $("#listCli").css("display", "flex");
+
+        $.post("getClients.php", (data) => {
+          let datos = JSON.parse(data);
+
+          console.log(datos);
+
+          if (datos != 0) {
+            let tbody = $("#tbody");
+            tbody.empty();
+            for (let i = 0; i < datos.length; i++) {
+              tbody.append(
+                "<tr class='odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>" +
+                  "<th scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>" +
+                  datos[i].client_name +
+                  "</th>" +
+                  "<td class='px-6 py-4'>" +
+                  datos[i].client_email +
+                  "</td>" +
+                  "<td class='px-6 py-4'>" +
+                  datos[i].client_dni +
+                  "</td>" +
+                  "<td class='px-6 py-4 text-right'>" +
+                  "<a href='deleteClient.php?id=" +
+                  datos[i].client_id +
+                  "' id='delete' class='font-medium text-blue-600 dark:text-blue-500 hover:underline'>Eliminar</a>" +
+                  "</td>" +
+                  "</tr>"
+              );
+            }
+          } else {
+            alert("No hay datos");
+          }
+        });
+      });
+
+      $("#altaCli").on("click", (e) => {
+        e.preventDefault();
+
+        $("#form").css("display", "flex");
+        $("#listCli").css("display", "none");
+      });
+    </script>
+  </body>
+</html>
