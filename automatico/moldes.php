@@ -7,7 +7,7 @@ class crud
     private $tabla;
     private $conexion;
     private $camposstr;
-    private $camposarr;
+    public $camposarr;
 
     function __construct($t)
     {
@@ -17,7 +17,7 @@ class crud
 
 
     }
-    function dameCampos()
+    public function dameCampos()
     {
         $cadena = "";
         $cadenaarr = [];
@@ -32,19 +32,19 @@ class crud
         $this->camposarr = $cadenaarr;
     }
 
-    function insertar($valores)
+    public function insertar($valores)
     {
-        $sql = "INSERT INTO $this->tabla ($this->camposstr) VALUES ($valores)";
+        $sql = "INSERT INTO $this->tabla ($this->camposstr) VALUES (null, $valores)";
         return $this->conexion->query($sql);
     }
 
-    function consultar()
+    public function consultar()
     {
         $sql = "SELECT * FROM $this->tabla";
         return $this->conexion->query($sql);
     }
 
-    function pinta_cabtabla()
+    public function pinta_cabtabla()
     {
         echo "<table border='1'>
             <thead>
@@ -59,7 +59,7 @@ class crud
             <tbody>";
     }
 
-    function pinta_cuertabla()
+    public function pinta_cuertabla()
     {
 
         echo "<tbody>";
@@ -74,17 +74,66 @@ class crud
             </table>";
     }
 
-    function borrar($idVal)
+    public function borrar($idVal)
     {
         $id = $this->camposarr[0];
         $sql = "DELETE FROM $this->tabla WHERE $id = $idVal";
         return $this->conexion->query($sql);
     }
 
+    public function get_campos()
+    {
+        return $this->camposarr;
+    }
+
+    public function get_valores()
+    {
+
+        $valores = "";
+        for ($i = 1; $i < count($this->camposarr); $i++) {
+            $partes = explode("_", $this->camposarr[$i]);
+            $valores .= $_POST[$partes[$i]] . ",";
+        }
+
+        return substr($valores, 0, -1);
+    }
 
 }
 
+function pinta_form($campos)
+{
+
+    echo "<form action='grabarcrud.php' method='POST'>";
+    for ($i = 1; $i < count($campos); $i++) {
+        $partes = explode("_", $campos[$i]);
+        echo "<input type='text' name='$partes[0]' placeholder='" . ucfirst($partes[0]) . " '>";
+    }
+
+
+    echo "<input type='hidden' name='tabla' value=''>";
+    echo "<input type='submit' value='Grabar'>";
+    echo "</form>";
+
+    echo '<script> getTablaTitle() </script>';
+}
+;
+
+function getTablaTitle()
+{
+    return "<script>
+    $('input[type=hidden]').val('$(h1).text()');
+    </script>";
+}
+
+
+
 $algo = new crud("clientes");
-$algo->insertar();
+$valores = $algo->get_valores();
+$algo->consultar();
+$algo->insertar($valores);
 $algo->pinta_cabtabla();
 $algo->pinta_cuertabla();
+$campos = $algo->get_campos();
+
+//Si esta fuera de la clase no se pone $algo->pinta_form($campos);
+pinta_form($campos);
