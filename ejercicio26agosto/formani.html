@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <form action="">
+      <input type="text" name="nomani" placeholder="nomani" />
+      <input type="text" name="chipani" placeholder="chipani" />
+      <input type="text" name="tlfpro" placeholder="tlfpro" />
+      <input type="text" name="emailpro" placeholder="emailpro" />
+      <input type="text" name="razaani" placeholder="razaani" />
+      <input type="text" name="nomadm" placeholder="nomadm" />
+      <input type="submit" value="insert" />
+    </form>
+    <script>
+      $("form").submit(function (event) {
+        event.preventDefault();
+
+        // Obtener los valores en el momento del envío del formulario
+        let nomani = $("input[name=nomani]").val();
+        let chipani = $("input[name=chipani]").val();
+        let tlfpro = $("input[name=tlfpro]").val();
+        let emailpro = $("input[name=emailpro]").val();
+        let razaani = $("input[name=razaani]").val();
+        let nomadm = $("input[name=nomadm]").val();
+
+        $.post(
+          "insertAni.php",
+          {
+            nomani: nomani,
+            chipani: chipani,
+            tlfpro: tlfpro,
+            emailpro: emailpro,
+            razaani: razaani,
+            nomadm: nomadm,
+          },
+          function (data) {
+            //console.log(data);
+            //console.log(nomani, chipani, tlfpro, emailpro, razaani, nomadm);
+
+            if (data == 1) {
+              alert("inserted");
+            } else {
+              alert("not inserted");
+            }
+          }
+        );
+      });
+    </script>
+  </body>
+</html>

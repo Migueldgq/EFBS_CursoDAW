@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <form action="">
+      <input type="text" name="nompro" placeholder="nompro" />
+      <input type="text" name="passpro" placeholder="passpro" />
+      <input type="text" name="nomadm" placeholder="nomadm" />
+      <input type="submit" value="insert" />
+    </form>
+    <script>
+      $("form").submit(function (event) {
+        event.preventDefault();
+
+        let nompro = $("input[name=nompro]").val();
+        let passpro = $("input[name=passpro]").val();
+        let nomadm = $("input[name=nomadm]").val();
+
+        $.post(
+          "insertProp.php",
+          {
+            nompro: nompro,
+            passpro: passpro,
+            nomadm: nomadm, 
+          },
+          function (data) {
+            console.log(data);
+
+            if (data == 1) {
+              alert("inserted");
+            } else {
+              alert("not inserted");
+            }
+          }
+        );
+      });
+    </script>
+  </body>
+</html>
